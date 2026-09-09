@@ -20,6 +20,7 @@ int main()
 		float t = GetTime();
 		float dt = GetFrameTime();
 
+		// pretty sure this is how its supposed to be done but i dont know if it is correct or not but it works so im happy with it
 		y = y + (cos(t * a)) * a * b * dt; // Update y position based on cosine function
 		x = x + (-sin(t * a)) * a * b * dt; // Update x position based on sine function
 		
