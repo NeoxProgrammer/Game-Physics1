@@ -7,33 +7,66 @@ int main()
     InitWindow(800, 800, "Physics-1");
     InitAudioDevice();
     SetTargetFPS(60);
-    Vector2 RandomPos = { GetRandomValue(0, 800), GetRandomValue(0, 800) };
 
-	float x = 400, y = 400;
-    float a = 6.0f; // amplitude radius of movement how fast it goes around the circle
-    float b = 5.1f; // frequency of movement kind of how far it goes around the circle when changing the values thats what i found lol
+    Vector2 launch_position = { 100.0f, 700.0f };
+    float launch_angle = 0.0f;
+    float launch_speed = 100.0f;
+
+
+
+
+	Vector2 new_launch_position = { 400.0f,400.0f };
+	float new_launch_angle = 0.0f;
+	float new_launch_speed = 100.0f;
+
+
+
+
+    // Note that since raylib is an RHS, positive rotations are CLOCKWISE
+    // You will most likely want to negate the launch angle so that your launch_velocity vector points upwards
     
-    
+
+	Vector2 my_example_direction = Vector2Rotate(Vector2UnitX, -new_launch_angle * DEG2RAD);
 
     while (!WindowShouldClose())
     {
-		float t = GetTime();
-		float dt = GetFrameTime();
+        // 1. Calculate launch_direction Vector2 by using the Vector2Rotate function.
+        // (Be sure to convert launch_angle from degrees to radians when passing it to Vector2Rotate)!
+        // 2. Calculate launch_velocity Vector2 by multiplying launch_direction by launch_speed
+        // 3. Render launch_velocity as a line from launch_position to launch_position + launch_velocity
 
-		// pretty sure this is how its supposed to be done but i dont know if it is correct or not but it works so im happy with it
-		y = y + (cos(t * a)) * a * b * dt; // Update y position based on cosine function
-		x = x + (-sin(t * a)) * a * b * dt; // Update x position based on sine function
-		
-
-		float time = GetTime();
         BeginDrawing();
         ClearBackground(WHITE);
 
-        DrawText("Bashaar Ali 101545977", 50, 750, 30, RED);
+
+        Vector2 my_example_direction = Vector2Rotate(Vector2UnitX, -new_launch_angle * DEG2RAD);
+		Vector2 new_launch_velocity = my_example_direction * new_launch_speed;
+		DrawLineEx(new_launch_position, new_launch_position + new_launch_velocity, 4.0f, BLUE);
+
+
+
+        // Draw your launch_position + launch_velocity line here!
         
-        const char* text = TextFormat("Time: %f", time); 
-        DrawText(text, 400, 400, 20, GREEN); 
-        DrawCircle(x,y, 20,DARKPURPLE ); 
+        DrawCircleV(new_launch_position, 20.0f, BLUE);
+
+        // An example illustration of a rotated vector
+        // DrawLineEx(example_position, example_position + example_direction * 100.0f, 4.0f, GRAY);
+		//DrawLineEx(new_launch_position, new_launch_position + my_example_direction * 100.0f, 4.0f, BLUE);
+
+       
+
+
+        DrawText(TextFormat("Launch Angle %2.1f", new_launch_angle), 10, 250, 20, DARKGRAY);
+        DrawText(TextFormat("Launch Speed %2.1f", new_launch_speed), 10, 390, 20, DARKGRAY);
+        DrawText(TextFormat("Launch Position X %2.1f", new_launch_position.x), 10, 510, 20, DARKGRAY);
+		DrawText(TextFormat("Launch Position Y %2.1f", new_launch_position.y), 10, 630, 20, DARKGRAY);
+
+		GuiSlider({ 10.0f, 290.0f, 160.0f, 80.0f }, "0", "90", &new_launch_angle, 0.0f, 90.0f);
+		GuiSlider({ 10.0f, 410.0f, 160.0f, 80.0f }, "10", "300", &new_launch_speed, 10.0f, 300.0f);
+		GuiSlider({ 10.0f, 530.0f, 160.0f, 80.0f }, "0", "800", &new_launch_position.x, 0.0f, 800.0f);
+		GuiSliderBar({ 10.0f, 650.0f, 160.0f, 80.0f }, "0", "800", &new_launch_position.y, 0.0f, 800.0f);
+       
+
 
         EndDrawing();
     }
