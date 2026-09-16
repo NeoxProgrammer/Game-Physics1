@@ -41,7 +41,7 @@ int main()
 
         Vector2 my_example_direction = Vector2Rotate(Vector2UnitX, -new_launch_angle * DEG2RAD);
 		Vector2 new_launch_velocity = my_example_direction * new_launch_speed;
-		DrawLineEx(new_launch_position, new_launch_position + new_launch_velocity, 4.0f, BLUE);
+		DrawLineEx(new_launch_position, new_launch_position + new_launch_velocity, 4.0f, RED);
 
 
 
