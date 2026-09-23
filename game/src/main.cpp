@@ -1,6 +1,24 @@
 #include "raylib.h"
 #include "raymath.h"
 #include "raygui.h"
+#include <array>
+#include <vector>
+#include <iostream>
+using namespace std;
+
+
+struct PhysicsBody {
+    Vector2 position;
+    Vector2 velocity;
+    float mass;
+};
+
+
+vector<PhysicsBody> bodies;
+
+constexpr Vector2 GRAVITY = { 0.0f, 9.81f };
+
+
 
 int main()
 {
@@ -8,11 +26,11 @@ int main()
     InitAudioDevice();
     SetTargetFPS(60);
 
-    Vector2 launch_position = { 100.0f, 701.0f };
-    float launch_angle = 0.0f;
-    float launch_speed = 100.0f;
+    
+    
 
 
+    
 
 
 	Vector2 new_launch_position = { 400.0f,400.0f };
@@ -30,6 +48,20 @@ int main()
 
     while (!WindowShouldClose())
     {
+        float tt = GetTime();       // Total time - time since the window was initialized
+        float dt = GetFrameTime();  // Frame (delta) time - time from start to end of previous frame (ideally 1.0f / 60.0f milliseconds)
+        // float hz = 1.0f / 60.0f; <-- dt should be approximately this value since we called SetTargetFPS(60);
+
+		
+
+
+
+
+       
+
+
+
+
         // 1. Calculate launch_direction Vector2 by using the Vector2Rotate function.
         // (Be sure to convert launch_angle from degrees to radians when passing it to Vector2Rotate)!
         // 2. Calculate launch_velocity Vector2 by multiplying launch_direction by launch_speed
@@ -42,6 +74,22 @@ int main()
         Vector2 my_example_direction = Vector2Rotate(Vector2UnitX, -new_launch_angle * DEG2RAD);
 		Vector2 new_launch_velocity = my_example_direction * new_launch_speed;
 		DrawLineEx(new_launch_position, new_launch_position + new_launch_velocity, 4.0f, RED);
+
+
+
+
+        if (IsKeyPressed(KEY_SPACE))
+        {
+            cout << "Space key pressed!";
+            PhysicsBody my_body;
+            my_body.position = new_launch_position;
+            my_body.velocity = new_launch_velocity;
+            bodies.push_back(my_body);
+        }
+
+		Vector2 accel = GRAVITY * dt;
+        
+
 
 
 
