@@ -8,7 +8,7 @@ int main()
     InitAudioDevice();
     SetTargetFPS(60);
 
-    Vector2 launch_position = { 100.0f, 700.0f };
+    Vector2 launch_position = { 100.0f, 701.0f };
     float launch_angle = 0.0f;
     float launch_speed = 100.0f;
 
@@ -66,7 +66,7 @@ int main()
 		GuiSlider({ 10.0f, 530.0f, 160.0f, 80.0f }, "0", "800", &new_launch_position.x, 0.0f, 800.0f);
 		GuiSliderBar({ 10.0f, 650.0f, 160.0f, 80.0f }, "0", "800", &new_launch_position.y, 0.0f, 800.0f);
        
-
+        
 
         EndDrawing();
     }
