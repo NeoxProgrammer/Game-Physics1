@@ -10,13 +10,34 @@ using namespace std;
 struct PhysicsBody {
     Vector2 position;
     Vector2 velocity;
-    float mass;
+    
+    void Draw() {
+        DrawCircleV(position, 20.0f, BLUE);
+	}
+
+    void Update() {
+        float dt = GetFrameTime();
+        Vector2 accel = GRAVITY * dt;
+        velocity += accel;
+		position += velocity * dt;
+
+
+    }
+
+
+
+
+
 };
 
 
 vector<PhysicsBody> bodies;
 
 constexpr Vector2 GRAVITY = { 0.0f, 9.81f };
+
+Vector2 new_launch_position = { 400.0f,400.0f };
+float new_launch_angle = 0.0f;
+float new_launch_speed = 100.0f;
 
 
 
@@ -33,9 +54,7 @@ int main()
     
 
 
-	Vector2 new_launch_position = { 400.0f,400.0f };
-	float new_launch_angle = 0.0f;
-	float new_launch_speed = 100.0f;
+	
 
 
 
@@ -80,11 +99,7 @@ int main()
 
         if (IsKeyPressed(KEY_SPACE))
         {
-            cout << "Space key pressed!";
-            PhysicsBody my_body;
-            my_body.position = new_launch_position;
-            my_body.velocity = new_launch_velocity;
-            bodies.push_back(my_body);
+            
         }
 
 		Vector2 accel = GRAVITY * dt;
