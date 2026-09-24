@@ -7,6 +7,9 @@
 using namespace std;
 
 
+
+
+constexpr Vector2 GRAVITY = { 0.0f, 9.81f };
 struct PhysicsBody {
     Vector2 position;
     Vector2 velocity;
@@ -20,20 +23,13 @@ struct PhysicsBody {
         Vector2 accel = GRAVITY * dt;
         velocity += accel;
 		position += velocity * dt;
-
-
     }
-
-
-
-
-
 };
 
 
 vector<PhysicsBody> bodies;
 
-constexpr Vector2 GRAVITY = { 0.0f, 9.81f };
+
 
 Vector2 new_launch_position = { 400.0f,400.0f };
 float new_launch_angle = 0.0f;
@@ -99,10 +95,20 @@ int main()
 
         if (IsKeyPressed(KEY_SPACE))
         {
-            
+			cout << "Spacebar pressed!" << endl;
+            PhysicsBody new_body;
+            new_body.position = new_launch_position;
+            new_body.velocity = new_launch_velocity;
+			bodies.push_back(new_body);
         }
 
-		Vector2 accel = GRAVITY * dt;
+        for(auto& body : bodies)
+        {
+            body.Update();
+            body.Draw();
+		}
+
+		
         
 
 
