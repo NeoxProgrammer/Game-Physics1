@@ -9,20 +9,21 @@ using namespace std;
 
 
 
-constexpr Vector2 GRAVITY = { 0.0f, 9.81f };
+constexpr Vector2 GRAVITY = { 0.0f, 100.0f };
 struct PhysicsBody {
     Vector2 position;
     Vector2 velocity;
     
     void Draw() {
-        DrawCircleV(position, 20.0f, BLUE);
+        DrawCircleV(position, 20.0f, ORANGE);
 	}
 
     void Update() {
         float dt = GetFrameTime();
-        Vector2 accel = GRAVITY * dt;
-        velocity += accel;
-		position += velocity * dt;
+        Vector2 accel = GRAVITY;
+        velocity += accel * dt;
+		position += velocity * dt; 
+        
     }
 };
 
