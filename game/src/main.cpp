@@ -87,11 +87,51 @@ float new_launch_speed = 100.0f;
 
 
 bool HitTestCircles(Vector2 pos_a, float radius_a, Vector2 pos_b, float radius_b) {
+    
+    bool overlap; 
+    float distanceY = pos_b.y - pos_a.y;// get the y distance between the two circles
+    float distanceX = pos_b.x - pos_a.x;// get the x distance between two circles
 
-    return false; 
+    float myradiusSum = radius_a + radius_b; 
+
+    float combinedDistance = (distanceX * distanceX) + (distanceY * distanceY); 
+    float radiusScaled = myradiusSum * myradiusSum;
 
 
+    
+    if (radiusScaled > combinedDistance) {
+        overlap = true; 
+        return overlap; 
+
+    }
+
+    else {
+        overlap = false; 
+        return overlap; 
+    }
 }
+
+
+
+/*
+   *  bool collision = false;
+
+   float dx = center2.x - center1.x;      // X distance between centers
+   float dy = center2.y - center1.y;      // Y distance between centers
+
+   float distanceSquared = dx*dx + dy*dy; // Distance between centers squared
+   float radiusSum = radius1 + radius2;
+
+   collision = (distanceSquared <= (radiusSum*radiusSum));
+
+   return collision;
+
+
+
+   */
+
+
+   // 2 circles are overlapping if the sum of their radius is greater then the distance between their centers
 
 
 
@@ -179,7 +219,7 @@ int main()
             for (size_t j = i + 1; j < bodies.size(); j++) {
                 PhysicsBody& A = bodies[i];
                 PhysicsBody& B = bodies[j];
-                bool collision = CheckCollisionCircles(A.position, A.collider.radius, B.position, B.collider.radius);
+                bool collision = HitTestCircles(A.position, A.collider.radius, B.position, B.collider.radius);
                 
                 A.colliding |= collision;
                 B.colliding |= collision;
