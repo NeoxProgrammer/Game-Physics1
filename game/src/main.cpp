@@ -232,18 +232,6 @@ int main()
 
         }
 
-
-
-
-       
-        
-
-		
-        
-
-
-
-
         // Draw your launch_position + launch_velocity line here!
         
         DrawCircleV(new_launch_position, 20.0f, BLUE);
