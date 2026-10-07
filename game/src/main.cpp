@@ -13,15 +13,22 @@ constexpr Vector2 GRAVITY = { 0.0f, 100.0f };
 struct PhysicsBody {
     Vector2 position;
     Vector2 velocity;
+
+    // not going to use these yet i think
+    float mass; 
+	float drag;
+
+	Color color;
     
     void Draw() {
-        DrawCircleV(position, 20.0f, ORANGE);
+        DrawCircleV(position, 20.0f, color);
 	}
 
     void Update() {
         float dt = GetFrameTime();
         Vector2 accel = GRAVITY;
         velocity += accel * dt;
+        velocity *= powf(drag, dt);
 		position += velocity * dt; 
         
     }
@@ -43,6 +50,8 @@ int main()
     InitWindow(800, 800, "Physics-1");
     InitAudioDevice();
     SetTargetFPS(60);
+
+	float launch_drag = 1.0f;  // No drag by default
 
     
     
@@ -97,9 +106,10 @@ int main()
         if (IsKeyPressed(KEY_SPACE))
         {
 			cout << "Spacebar pressed!" << endl;
-            PhysicsBody new_body;
+            PhysicsBody new_body{};
             new_body.position = new_launch_position;
             new_body.velocity = new_launch_velocity;
+			new_body.color = RED;
 			bodies.push_back(new_body);
         }
 
@@ -130,12 +140,14 @@ int main()
         DrawText(TextFormat("Launch Speed %2.1f", new_launch_speed), 10, 390, 20, DARKGRAY);
         DrawText(TextFormat("Launch Position X %2.1f", new_launch_position.x), 10, 510, 20, DARKGRAY);
 		DrawText(TextFormat("Launch Position Y %2.1f", new_launch_position.y), 10, 630, 20, DARKGRAY);
+		DrawText(TextFormat("Launch Drag %2.2f", launch_drag), 10, 30, 20, DARKGRAY);
 
 		GuiSlider({ 10.0f, 290.0f, 160.0f, 80.0f }, "0", "90", &new_launch_angle, 0.0f, 90.0f);
 		GuiSlider({ 10.0f, 410.0f, 160.0f, 80.0f }, "10", "300", &new_launch_speed, 10.0f, 300.0f);
 		GuiSlider({ 10.0f, 530.0f, 160.0f, 80.0f }, "0", "800", &new_launch_position.x, 0.0f, 800.0f);
 		GuiSliderBar({ 10.0f, 650.0f, 160.0f, 80.0f }, "0", "800", &new_launch_position.y, 0.0f, 800.0f);
-       
+
+        GuiSliderBar({ 10.0f, 50.0f, 160.0f, 80.0f }, "0.0", "1.0", &launch_drag, 0.0f, 1.0f);
         
 
         EndDrawing();
