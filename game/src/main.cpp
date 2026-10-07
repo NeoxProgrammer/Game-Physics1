@@ -86,6 +86,14 @@ float new_launch_angle = 0.0f;
 float new_launch_speed = 100.0f;
 
 
+bool HitTestCircles(Vector2 pos_a, float radius_a, Vector2 pos_b, float radius_b) {
+
+    return false; 
+
+
+}
+
+
 
 int main()
 {
@@ -159,25 +167,35 @@ int main()
 			bodies.push_back(new_body);
         }
 
+
+        for (auto& body : bodies)
+        {
+            body.Update();
+            
+        }
+
+
         for (size_t i = 0; i < bodies.size(); i++) {
             for (size_t j = i + 1; j < bodies.size(); j++) {
                 PhysicsBody& A = bodies[i];
                 PhysicsBody& B = bodies[j];
                 bool collision = CheckCollisionCircles(A.position, A.collider.radius, B.position, B.collider.radius);
+                
                 A.colliding |= collision;
                 B.colliding |= collision;
             }
         }
 
-
-
-
-        for(auto& body : bodies)
+        for (auto& body : bodies)
         {
-            body.Update();
             body.Draw();
-		}
 
+        }
+
+
+
+
+       
         
 
 		
