@@ -4,7 +4,34 @@
 #include <array>
 #include <vector>
 #include <iostream>
+#include <cassert>
 using namespace std;
+
+
+
+enum ColliderType {
+        COLLIDER_TYPE_NONE,
+        COLLIDER_TYPE_CIRCLE,
+};
+
+
+struct Collider {
+    ColliderType type;
+    union {
+
+        struct{
+            float radius; 
+
+        };
+
+
+
+
+
+    };
+
+};
+
 
 
 
@@ -18,10 +45,21 @@ struct PhysicsBody {
     float mass; 
 	float drag;
 
-	Color color;
+	
+    bool colliding; 
+
+    Collider collider; 
     
     void Draw() {
-        DrawCircleV(position, 20.0f, color);
+
+        assert(collider.type != COLLIDER_TYPE_NONE);
+        if (collider.type == COLLIDER_TYPE_CIRCLE) {
+            Color color = colliding ? RED : GREEN; 
+            DrawCircleV(position, collider.radius, color);
+
+
+        }
+        
 	}
 
     void Update() {
@@ -30,6 +68,10 @@ struct PhysicsBody {
         velocity += accel * dt;
         velocity *= powf(drag, dt);
 		position += velocity * dt; 
+        colliding = false;  // Reset colliding state each frame
+        
+        
+
         
     }
 };
@@ -73,7 +115,7 @@ int main()
 
     while (!WindowShouldClose())
     {
-        float tt = GetTime();       // Total time - time since the window was initialized
+        double tt = GetTime();       // Total time - time since the window was initialized
         float dt = GetFrameTime();  // Frame (delta) time - time from start to end of previous frame (ideally 1.0f / 60.0f milliseconds)
         // float hz = 1.0f / 60.0f; <-- dt should be approximately this value since we called SetTargetFPS(60);
 
@@ -109,15 +151,34 @@ int main()
             PhysicsBody new_body{};
             new_body.position = new_launch_position;
             new_body.velocity = new_launch_velocity;
-			new_body.color = RED;
+			new_body.drag = launch_drag;
+			
+            new_body.collider.type = COLLIDER_TYPE_CIRCLE; 
+            new_body.collider.radius = 20; 
+
 			bodies.push_back(new_body);
         }
+
+        for (size_t i = 0; i < bodies.size(); i++) {
+            for (size_t j = i + 1; j < bodies.size(); j++) {
+                PhysicsBody& A = bodies[i];
+                PhysicsBody& B = bodies[j];
+                bool collision = CheckCollisionCircles(A.position, A.collider.radius, B.position, B.collider.radius);
+                A.colliding |= collision;
+                B.colliding |= collision;
+            }
+        }
+
+
+
 
         for(auto& body : bodies)
         {
             body.Update();
             body.Draw();
 		}
+
+        
 
 		
         
